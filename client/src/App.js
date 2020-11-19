@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Customer from "./Components/Customer";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
@@ -19,68 +19,60 @@ const styles = (theme) => ({
   },
 });
 
-const customers = [
-  {
-    id: "1",
-    image: "https://placeimg.com/64/64/1",
-    name: "소현진",
-    birthday: "000425",
-    gender: "female",
-    job: "student",
-  },
-  {
-    id: "2",
-    image: "https://placeimg.com/64/64/2",
-    name: "김선호",
-    birthday: "121212",
-    gender: "male",
-    job: "actor",
-  },
-  {
-    id: "3",
-    image: "https://placeimg.com/64/64/3",
-    name: "김제니",
-    birthday: "131313",
-    gender: "female",
-    job: "singer",
-  },
-];
+function App(props) {
+  const [Customers, setCustomers] = useState("");
+  const [Image, setImage] = useState("");
+  const [Name, setName] = useState("");
+  const [Birth, setBirth] = useState("");
+  const [Gender, setGender] = useState("");
+  const [Job, setJob] = useState("");
 
-class App extends React.Component {
-  render() {
-    const { classes } = this.props;
-    return (
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>번호</TableCell>
-              <TableCell>이미지</TableCell>
-              <TableCell>이름</TableCell>
-              <TableCell>생년월일</TableCell>
-              <TableCell>성별</TableCell>
-              <TableCell>직업</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {customers.map((customer) => {
-              return (
-                <Customer
-                  key={customer.id}
-                  id={customer.id}
-                  image={customer.image}
-                  name={customer.name}
-                  birthday={customer.birthday}
-                  gender={customer.gender}
-                  job={customer.job}
-                />
-              );
-            })}
-          </TableBody>
-        </Table>
-      </Paper>
-    );
-  }
+  useEffect(() => {
+    callApi()
+      .then((res) => setCustomers(res))
+      .catch((err) => console.log(err));
+  });
+
+  const callApi = async () => {
+    const response = await fetch("api/customers");
+    const body = await response.json();
+    return body;
+  };
+
+  const { classes } = props;
+  return (
+    <Paper className={classes.root}>
+      <Table className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <TableCell>번호</TableCell>
+            <TableCell>이미지</TableCell>
+            <TableCell>이름</TableCell>
+            <TableCell>생년월일</TableCell>
+            <TableCell>성별</TableCell>
+            <TableCell>직업</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {Customers
+            ? Customers.map((customer) => {
+                return (
+                  <Customer
+                    key={customer.id}
+                    id={customer.id}
+                    image={customer.image}
+                    name={customer.name}
+                    birthday={customer.birthday}
+                    gender={customer.gender}
+                    job={customer.job}
+                  />
+                );
+              })
+            : ""}
+        </TableBody>
+      </Table>
+    </Paper>
+  );
 }
 
 export default withStyles(styles)(App);
