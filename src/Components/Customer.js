@@ -1,16 +1,47 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 export class Customer extends Component {
-    render() {
-        return (
-            <div>
-      <h2>소현진</h2>
-      <p>121916</p>
-      <p>여자</p>
-      <p>대학생</p>
-    </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <CustomerProfile
+          id={this.props.id}
+          name={this.props.name}
+          image={this.props.image}
+        />
+        <CustomerInfo
+          birthday={this.props.birthday}
+          gender={this.props.gender}
+          job={this.props.job}
+        />
+      </div>
+    );
+  }
 }
 
-export default Customer
+class CustomerProfile extends React.Component {
+  render() {
+    return (
+      <div>
+        <img src={this.props.image} alt='profile' />
+        <h2>
+          {this.props.name}({this.props.id})
+        </h2>
+      </div>
+    );
+  }
+}
+
+class CustomerInfo extends React.Component {
+  render() {
+    return (
+      <div>
+        <p>{this.props.birthday}</p>
+        <p>{this.props.gender}</p>
+        <p>{this.props.job}</p>
+      </div>
+    );
+  }
+}
+
+export default Customer;
