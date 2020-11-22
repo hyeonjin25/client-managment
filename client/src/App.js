@@ -36,6 +36,7 @@ function App(props) {
     callApi()
       .then((res) => {
         setCustomers(res);
+        console.log(Customers);
       })
       .catch((err) => {
         console.log(err);
